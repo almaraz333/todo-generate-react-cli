@@ -1,11 +1,11 @@
 module.exports = (plop) => {
-  plop.setGenerator('component', {
+  plop.setGenerator('Component', {
     description: 'Create a reusable component',
     prompts: [
       {
         type: 'input',
         name: 'name',
-        message: 'What is your component name?'
+        message: "What is your component's name?"
       }
     ],
     actions: [
@@ -44,13 +44,13 @@ module.exports = (plop) => {
     ]
   });
 
-  plop.setGenerator('hook', {
+  plop.setGenerator('Hook', {
     description: 'Create a custom react hook',
     prompts: [
       {
         type: 'input',
         name: 'name',
-        message: 'What is your hook name?'
+        message: "What is your hook's name?"
       }
     ],
     actions: [
@@ -67,9 +67,39 @@ module.exports = (plop) => {
       },
       {
         type: 'append',
-        path: 'src/hooks/index.js',
-        pattern: `/* PLOP_INJECT_IMPORT */`,
-        template: `export {{camelCase name}} from './{{camelCase name}}';`
+        path: 'src/hooks/index.ts',
+        pattern: `/* PLOP_INJECT_EXPORT */`,
+        template: `export { {{camelCase name}} } from './{{camelCase name}}';`
+      }
+    ]
+  });
+
+  plop.setGenerator('Util', {
+    description: 'Create a custom util',
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: "What is your util's name?"
+      }
+    ],
+    actions: [
+      {
+        type: 'add',
+        path: 'src/utils/{{camelCase name}}.ts',
+        templateFile: 'plop-templates/Utils/util.js.hbs'
+      },
+      {
+        type: 'add',
+        path: 'src/utils/index.ts',
+        templateFile: 'plop-templates/util-index.js.hbs',
+        skipIfExists: true
+      },
+      {
+        type: 'append',
+        path: 'src/utils/index.ts',
+        pattern: `/* PLOP_INJECT_EXPORT */`,
+        template: `export { {{camelCase name}} } from './{{camelCase name}}';`
       }
     ]
   });
